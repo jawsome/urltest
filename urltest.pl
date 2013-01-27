@@ -1,37 +1,44 @@
 #!/usr/bin/env perl
-usr warnings;
+use warnings;
 use LWP::UserAgent;
 
-my $browser=new LWP::UserAgent (
-  cookie_jar => {},
-  timeout => '15',
-	);
+### load parser ###
 
-	$browser->agent('Mozilla/5.0');
+### fetch package status ###
 
-	my %logindata = (
+my $browser= new LWP::UserAgent (
+	cookie_jar => {},
+		timeout => '15',
+		);
 
-		username => ;'***********',
-		password => "************",
+		$browser->agent('Mozilla/5.0');
 
-	open my $urllist, '<', "urls.txt";
-	@urls=<$urllist>;
-	close $urllist;
+		my %logindata = (
+			username => '**',
+				password => "**",
+				);
 
-	my $loginurl="https://gbadmin.hostgator.com/login/";
-	my $gbill = $browser->post($loginurl, Content=> \%logindata);
+				#login page
 
-	if (index($accturl,'search') > -1 {
+				open my $urllist, '<', "urls.txt";
+				@urls=<$urllist>;
+				close $urllist;
 
-	my $pdata = $browser->get("$accturl");
-        my @pdataload= $pdata->decoded_content;
+				my $loginurl="https://gbadmin.hostgator.com/login/";
+				my $gbill = $browser->post($loginurl, Content=> \%logindata);
 
-	my $time=time;
-	open my $parseout, '>', "$home/tmp/acct-$time.html";
-	print $parseout @pdataload;
-	close $parseout;
-	my @accthtml= qx(lynx --dump --width 900 $home/tmp/acct/-$time.html);
-	foreach (@accthtml) {
-		print $_ if ($_ =~ m/Cancelled/i);
-		};
-		};
+				foreach my $accturl (@urls) {
+				my $pdata = $browser->get("$accturl");
+				my @pdataload= $pdata->decoded_content;
+				## parse ##
+				my $time=time;
+ 				open my $parseout, '>', "./tmp/acct-$time.html";
+				print $parseout @pdataload;
+				close $parseout;
+				my @accthtml= qx(lynx --dump --width 900 ./tmp/acct-$time.html);
+				foreach (@accthtml) {
+					print $_ if ($_ =~ m/Cancelled/i);
+					};
+					};
+					;
+
